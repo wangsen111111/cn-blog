@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Project Object Model，项目对象模型。通过xml格式保存的pom.xml文件。作用类似ant的build.xml文件，功能更强大。该文件用于管理：源代码、配置文件、开发者的信息和角色、问题追踪系统、组织信息、项目授权、项目的url、项目的依赖关系等等。
+一个完整的pom.xml文件，放置在项目的根目录下. -->
+<!--maven协作相关属性-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>    <!-- 组织标识 -->
+    <artifactId>servlet-blog</artifactId>   <!--项目名称-->
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>   <!--打包的格式，war是java web项目打包 -->
+    <!--POM之间的关系依赖关系：依赖关系列表（dependency list）是POM的重要部分-->
+    <dependencies>
+
+        <!-- MySQL数据库JDBC驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.49</version>
+        </dependency>
+
+        <!-- Lombok: 自动插入编辑器并构建工具，以注解的方式，简化一些模版代码的编写，
+                    如getter/setter方法、equals/hashcode方法、toString方法等-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- servlet api -->
+        <!--servlet是用Java编写的服务器端程序。其主要功能在于交互式地浏览和修改数据，生成动态Web内容。
+            servlet过程：
+            1) 客户端发送请求至服务器端；
+            2) 服务器将请求信息发送至 Servlet；
+            3) Servlet 生成响应内容并将其传给服务器。响应内容动态生成，通常取决于客户端的请求；
+            4) 服务器将响应返回给客户端。
+            -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope><!--配置这个含义：编译时需要，打包运行时不需要的依赖-->
+
+        </dependency>
+
+        <!-- jsp api -->
+        <!--JSP将Java代码和特定变动内容嵌入到静态的页面中，实现以静态页面为模板，动态生成其中的部分内容。 -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.3</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- jstl: JSP标准标签库 -->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.servlet</groupId>-->
+        <!--            <artifactId>jstl</artifactId>-->
+        <!--            <version>1.2</version>-->
+        <!--        </dependency>-->
+
+        <!-- JUnit: java的一种测试框架 -->
+        <!--scope为test表示依赖项目仅仅参与测试相关的工作，包括测试代码的编译，执行。比较典型的如junit。 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!--JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息，本质是一个字符串。如
+          var obj = {a: 'Hello', b: 'World'}; //这是一个对象，注意键名也是可以使用引号包裹的
+          var json = '{"a": "Hello", "b": "World"}'; //这是一个 JSON 字符串，本质是一个字符串
+        -->
+        <!--jackson databind: 数据绑定包，提供Java对象与JSON数据格式进行序列化及反序列化的支持
+            序列化：将对象写入IO流中；
+            反序列化：从IO流中恢复对象；
+        -->
+        <!--简单地说，JSON 可以将 JavaScript 对象中表示的一组数据转换为字符串，然后就可以在网络或者程序之间轻松地传递这个字符串，并在需要的时候将它还原为各编程语言所支持的数据格式-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
+        <!-- 百度UEditor富文本编辑器 -->
+        <dependency>
+            <groupId>com.blingblingbang</groupId>
+            <artifactId>ueditor</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+
+    </dependencies>
+<!--Plugins：设置构建的插件 -->
+    <build>
+        <!-- 打包后的包名（和我们部署的项目名一致） -->
+        <finalName>ss</finalName>
+        <plugins>
+            <plugin>
+                <!--compiler编译器  编译器的插件 -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+               </configuration>
+            </plugin>
+            <!-- 解决maven test命令时console出现中文乱码乱码
+                 Console 对象提供了浏览器控制台调试的接口
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
